@@ -22,7 +22,6 @@ export default function VoiceNavigation() {
     recognition.onresult = (event: any) => {
       const current = event.resultIndex;
       const speechToText = event.results[current][0].transcript.toLowerCase().trim();
-      setTranscript(speechToText);
 
       // Execute Commands
       if (speechToText.includes('scroll down')) {
