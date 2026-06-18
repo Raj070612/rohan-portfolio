@@ -22,7 +22,29 @@ export default function BackgroundMusic() {
         audioRef.current.play().catch(console.error);
       }
     }
-  }, [currentTrackIndex]);
+
+    const handleSpidyMusic = (e: any) => {
+      const { action, track } = e.detail;
+      if (action === 'pause') {
+        if (audioRef.current) audioRef.current.pause();
+        setIsPlaying(false);
+      } else if (action === 'play') {
+        if (track !== undefined && track >= 0 && track < PLAYLIST.length) {
+          setCurrentTrackIndex(track);
+        }
+        setIsPlaying(true);
+        if (audioRef.current) {
+          audioRef.current.play().catch(console.error);
+        }
+      } else if (action === 'next') {
+        setCurrentTrackIndex((prev) => (prev + 1) % PLAYLIST.length);
+        setIsPlaying(true);
+      }
+    };
+
+    window.addEventListener('spidy-music', handleSpidyMusic);
+    return () => window.removeEventListener('spidy-music', handleSpidyMusic);
+  }, [currentTrackIndex, isPlaying]);
 
   const togglePlay = () => {
     if (audioRef.current) {
