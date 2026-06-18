@@ -108,7 +108,9 @@ export default function ParticleNetwork() {
 
     function init() {
       particles = [];
-      const numberOfParticles = Math.min((width * height) / 10000, 150); // Scale based on screen size
+      const isMobile = width < 768;
+      const maxParticles = isMobile ? 30 : 150; // Massively reduced for mobile
+      const numberOfParticles = Math.min((width * height) / 10000, maxParticles); 
       for (let i = 0; i < numberOfParticles; i++) {
         particles.push(new Particle());
       }
@@ -117,25 +119,28 @@ export default function ParticleNetwork() {
     function animate() {
       if (!ctx) return;
       ctx.clearRect(0, 0, width, height);
+      const isMobile = width < 768;
 
       for (let i = 0; i < particles.length; i++) {
         particles[i].update();
         particles[i].draw();
 
-        // Connect particles with lines if they are close
-        for (let j = i; j < particles.length; j++) {
-          let dx = particles[i].x - particles[j].x;
-          let dy = particles[i].y - particles[j].y;
-          let distance = Math.sqrt(dx * dx + dy * dy);
+        // Connect particles with lines if they are close (DISABLED ON MOBILE FOR PERFORMANCE)
+        if (!isMobile) {
+          for (let j = i; j < particles.length; j++) {
+            let dx = particles[i].x - particles[j].x;
+            let dy = particles[i].y - particles[j].y;
+            let distance = Math.sqrt(dx * dx + dy * dy);
 
-          if (distance < 120) {
-            ctx.beginPath();
-            ctx.strokeStyle = `rgba(6, 182, 212, ${0.2 - distance/600})`;
-            ctx.lineWidth = 1;
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
-            ctx.closePath();
+            if (distance < 120) {
+              ctx.beginPath();
+              ctx.strokeStyle = `rgba(6, 182, 212, ${0.2 - distance/600})`;
+              ctx.lineWidth = 1;
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.stroke();
+              ctx.closePath();
+            }
           }
         }
       }

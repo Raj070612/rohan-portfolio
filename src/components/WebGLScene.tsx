@@ -33,7 +33,7 @@ function DataCore() {
     <group ref={groupRef}>
       <Float speed={2} rotationIntensity={1} floatIntensity={2}>
         {/* Central Core */}
-        <Sphere args={[1.2, 32, 32]}>
+        <Sphere args={[1.2, 16, 16]}>
           <meshStandardMaterial 
             color="#06B6D4" 
             wireframe 
@@ -44,7 +44,7 @@ function DataCore() {
           />
         </Sphere>
 
-        <Sphere args={[1, 32, 32]}>
+        <Sphere args={[1, 16, 16]}>
           <meshStandardMaterial 
             color="#0A0A0A" 
             metalness={0.9}
@@ -55,7 +55,7 @@ function DataCore() {
         {/* Orbiting Data Points */}
         {dataPoints.map((pos, i) => (
           <group key={i}>
-            <Sphere position={pos} args={[0.05, 16, 16]}>
+            <Sphere position={pos} args={[0.05, 8, 8]}>
               <meshBasicMaterial color={i % 2 === 0 ? "#06B6D4" : "#8B5CF6"} />
             </Sphere>
             {/* Connection lines back to core */}

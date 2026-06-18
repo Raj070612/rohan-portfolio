@@ -31,8 +31,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {children}
         </main>
         
-        {/* Floating Controls */}
-        <div className="fixed top-24 left-6 z-[100] md:left-10 flex flex-col gap-4">
+        {/* Floating Controls (Hidden on Mobile for Performance) */}
+        <div className="hidden md:flex fixed top-24 left-10 z-[100] flex-col gap-4">
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
