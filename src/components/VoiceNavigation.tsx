@@ -137,17 +137,23 @@ export default function VoiceNavigation() {
     };
 
     recognition.onerror = (event: any) => {
-      console.error('Speech recognition error', event.error);
+      console.error('Speech recognition error:', event.error);
+      if (event.error === 'not-allowed' || event.error === 'audio-capture') {
+         setIsListening(false);
+         setIsAwake(false);
+      }
     };
 
     recognition.onend = () => {
       // CONTINUOUS LISTENING: Auto-restart if master switch is ON
       if (isListeningRef.current) {
-        try {
-          recognition.start();
-        } catch (e) {
-          console.error("Failed to restart recognition", e);
-        }
+        setTimeout(() => {
+          try {
+            recognitionRef.current?.start();
+          } catch (e) {
+            console.error("Failed to restart recognition", e);
+          }
+        }, 400); // Small delay to prevent Chrome InvalidStateError
       }
     };
 
