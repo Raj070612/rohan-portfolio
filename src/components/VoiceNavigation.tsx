@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaMicrophone, FaMicrophoneSlash } from 'react-icons/fa';
+import { generatePortfolioResponse } from '../utils/AIBrain';
 
 export default function VoiceNavigation() {
   const [isListening, setIsListening] = useState(false); // Master switch
@@ -258,11 +259,31 @@ export default function VoiceNavigation() {
         }
         case 'UNKNOWN':
         default:
-          // Ultimate fallback: Just search google!
           const fallbackQuery = speechToText.replace(/(hey|hi|hello|wake up|listen|spid.*|speed.*|spider)/ig, '').trim();
           if (fallbackQuery.length > 3) {
-             window.open(`https://www.google.com/search?q=${encodeURIComponent(fallbackQuery)}`, '_blank');
-             speak(`I don't know the answer, so I am searching the web for: ${fallbackQuery}`);
+             // 1. Check Portfolio Brain
+             const portfolioAnswer = generatePortfolioResponse(fallbackQuery);
+             if (portfolioAnswer) {
+               speak(portfolioAnswer);
+               break;
+             }
+             
+             // 2. Fetch General Knowledge (Wikipedia)
+             speak(`Let me look that up for you.`);
+             fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(fallbackQuery)}`)
+               .then(res => res.json())
+               .then(data => {
+                 if (data && data.extract) {
+                   speak(data.extract.substring(0, 200) + '...');
+                 } else {
+                   speak(`I couldn't find a direct answer. Opening a search for you.`);
+                   window.open(`https://www.google.com/search?q=${encodeURIComponent(fallbackQuery)}`, '_blank');
+                 }
+               })
+               .catch(() => {
+                 speak(`I had trouble fetching the answer. Searching the web instead.`);
+                 window.open(`https://www.google.com/search?q=${encodeURIComponent(fallbackQuery)}`, '_blank');
+               });
           } else {
              speak(`I am not sure what you mean, sir.`);
           }
