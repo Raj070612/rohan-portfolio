@@ -24,12 +24,36 @@ export default function VoiceNavigation() {
       const speechToText = event.results[current][0].transcript.toLowerCase().trim();
 
       // Execute Commands
-      if (speechToText.includes('scroll down')) {
+      if (speechToText.includes('scroll down') || speechToText.includes('go down')) {
         window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
         setFeedback('Scrolling Down');
-      } else if (speechToText.includes('scroll up')) {
+      } else if (speechToText.includes('scroll up') || speechToText.includes('go up')) {
         window.scrollBy({ top: -window.innerHeight * 0.8, behavior: 'smooth' });
         setFeedback('Scrolling Up');
+      } else if (speechToText.includes('top') || speechToText.includes('go to top')) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setFeedback('Going to Top');
+      } else if (speechToText.includes('bottom') || speechToText.includes('go to bottom')) {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        setFeedback('Going to Bottom');
+      } else if (speechToText.includes('about')) {
+        document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+        setFeedback('Navigating to About');
+      } else if (speechToText.includes('project')) {
+        document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
+        setFeedback('Navigating to Projects');
+      } else if (speechToText.includes('skill')) {
+        document.getElementById('skills')?.scrollIntoView({ behavior: 'smooth' });
+        setFeedback('Navigating to Skills');
+      } else if (speechToText.includes('experience')) {
+        document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' });
+        setFeedback('Navigating to Experience');
+      } else if (speechToText.includes('contact')) {
+        document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+        setFeedback('Navigating to Contact');
+      } else if (speechToText.includes('resume') || speechToText.includes('download')) {
+        window.open('/Rohan_Baviskar_Resume.pdf', '_blank');
+        setFeedback('Opening Resume');
       } else if (speechToText.includes('play music')) {
         const audio = document.querySelector('audio');
         if (audio) audio.play();
@@ -38,14 +62,16 @@ export default function VoiceNavigation() {
         const audio = document.querySelector('audio');
         if (audio) audio.pause();
         setFeedback('Pausing Music');
-      } else if (speechToText.includes('hello rohan')) {
-        setFeedback('Hello! Welcome to my portfolio.');
+      } else if (speechToText.includes('hello spidy') || speechToText.includes('hi spidy')) {
+        setFeedback('Hello sir! I am Spidy, ready to assist.');
+      } else if (speechToText.includes('who are you')) {
+        setFeedback('I am Spidy, Rohan\'s personal AI assistant.');
       } else {
-         setFeedback('Unknown Command');
+         setFeedback(`Command not recognized: ${speechToText}`);
       }
 
-      // Clear feedback after 2 seconds
-      setTimeout(() => setFeedback(''), 2000);
+      // Clear feedback after 3 seconds
+      setTimeout(() => setFeedback(''), 3000);
     };
 
     recognition.onerror = (event: any) => {
@@ -86,7 +112,7 @@ export default function VoiceNavigation() {
             exit={{ opacity: 0, y: -20 }}
             className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[100] glass px-6 py-3 rounded-full border-accent-cyan/30 text-accent-cyan font-mono text-sm shadow-[0_0_30px_rgba(6,182,212,0.3)] whitespace-nowrap"
           >
-             J.A.R.V.I.S: {feedback}
+             Spidy: {feedback}
           </motion.div>
         )}
       </AnimatePresence>
