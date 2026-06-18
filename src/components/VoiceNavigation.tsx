@@ -7,6 +7,8 @@ export default function VoiceNavigation() {
   const [isAwake, setIsAwake] = useState(false);         // Wake-word state
   const [feedback, setFeedback] = useState('');
 
+  const [debugText, setDebugText] = useState('');
+
   // Refs to access latest state inside SpeechRecognition callbacks
   const isListeningRef = useRef(isListening);
   const isAwakeRef = useRef(isAwake);
@@ -44,19 +46,21 @@ export default function VoiceNavigation() {
       const current = event.resultIndex;
       const speechToText = event.results[current][0].transcript.toLowerCase().trim();
       console.log("Spidy heard:", speechToText);
+      setDebugText(`Heard: "${speechToText}"`);
 
       // --- WAKE WORD LOGIC ---
-      const wakeRegex = /(hey|hi|hello|wake up|listen)\s*(spid.*|speed.*|spider)/i;
-      const sleepRegex = /(keep quiet|go to sleep|quiet|shut up|stop listening)\s*(spid.*|speed.*|spider)?/i;
+      // EXTREMELY LENIENT: Will wake up to anything containing "hey", "hi", "hello", "wake", or "spid"
+      const wakeRegex = /(hey|hi|hello|wake up|listen|spid|speed|spider)/i;
+      const sleepRegex = /(keep quiet|go to sleep|quiet|shut up|stop listening|sleep)/i;
 
-      if (wakeRegex.test(speechToText)) {
+      if (!isAwakeRef.current && wakeRegex.test(speechToText)) {
         setIsAwake(true);
         speak('Yes sir, I am listening.');
         setTimeout(() => setFeedback(''), 4000);
         return;
       }
 
-      if (sleepRegex.test(speechToText)) {
+      if (isAwakeRef.current && sleepRegex.test(speechToText)) {
         setIsAwake(false);
         speak('Going silent, sir.');
         setTimeout(() => setFeedback(''), 4000);
@@ -216,6 +220,16 @@ export default function VoiceNavigation() {
             }`}
           >
              Spidy: {feedback}
+          </motion.div>
+        )}
+
+        {isListening && debugText && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="fixed bottom-4 left-4 z-[100] text-[10px] font-mono text-slate-500 pointer-events-none"
+          >
+            {debugText}
           </motion.div>
         )}
       </AnimatePresence>
