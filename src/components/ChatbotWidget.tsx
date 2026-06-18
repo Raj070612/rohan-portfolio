@@ -77,6 +77,7 @@ export default function ChatbotWidget() {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => setIsOpen(!isOpen)}
+          aria-label={isOpen ? "Close AI Chatbot" : "Open AI Chatbot"}
           className="w-14 h-14 rounded-full glass flex items-center justify-center text-emerald-400 border border-emerald-400/40 shadow-[0_0_20px_rgba(52,211,153,0.2)] hover:shadow-[0_0_30px_rgba(52,211,153,0.5)] transition-all relative overflow-hidden"
         >
           {isOpen ? <FaTimes className="text-xl text-white" /> : <FaRobot className="text-xl" />}
@@ -162,6 +163,7 @@ export default function ChatbotWidget() {
               />
               <button
                 type="submit"
+                aria-label="Send message"
                 disabled={!input.trim() || isTyping}
                 className="w-10 h-10 shrink-0 rounded-full bg-emerald-400 text-brand-900 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white transition-colors"
               >

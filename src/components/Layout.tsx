@@ -45,6 +45,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => setIsHandTrackingEnabled(!isHandTrackingEnabled)}
+            aria-label="Toggle AI Hand Navigation"
             className={`w-12 h-12 rounded-full glass flex items-center justify-center transition-all shadow-lg border ${
               isHandTrackingEnabled 
                 ? 'bg-accent-cyan/20 text-accent-cyan border-accent-cyan/50 shadow-[0_0_20px_rgba(6,182,212,0.4)]' 

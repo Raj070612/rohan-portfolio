@@ -65,7 +65,10 @@ export default function HandTracking({ onClose }: { onClose: () => void }) {
         minTrackingConfidence: 0.7
       });
 
-      const onResults = (results: any) => {
+      interface Landmark { x: number; y: number; z: number; }
+      interface Results { multiHandLandmarks: Landmark[][] | undefined; }
+
+      const onResults = (results: Results) => {
         if (isUnmounted.current) return;
         if (!isModelLoaded) setIsModelLoaded(true);
         

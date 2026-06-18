@@ -1,21 +1,23 @@
+import React, { Suspense } from 'react';
 import { motion } from 'framer-motion';
 import HeroDashboard from '../components/HeroDashboard';
-import AnalyticsPlayground from '../components/AnalyticsPlayground';
 import ParticleNetwork from '../components/ParticleNetwork';
-import AboutSection from '../components/AboutSection';
-import SkillsSection from '../components/SkillsSection';
-import ExperienceSection from '../components/ExperienceSection';
-import ProjectsSection from '../components/ProjectsSection';
-import { AnalyticsSection } from '../components/AnalyticsSection';
-import ContactSection from '../components/ContactSection';
-import { ResumeVisionSection } from '../components/ResumeVisionSection';
 import { FaDownload, FaArrowRight } from 'react-icons/fa';
+
+// Lazy load below-the-fold components to massively improve Initial Page Load (TTI / FCP)
+const AnalyticsPlayground = React.lazy(() => import('../components/AnalyticsPlayground'));
+const AboutSection = React.lazy(() => import('../components/AboutSection'));
+const SkillsSection = React.lazy(() => import('../components/SkillsSection'));
+const ExperienceSection = React.lazy(() => import('../components/ExperienceSection'));
+const ProjectsSection = React.lazy(() => import('../components/ProjectsSection'));
+const AnalyticsSection = React.lazy(() => import('../components/AnalyticsSection').then(module => ({ default: module.AnalyticsSection })));
+const ContactSection = React.lazy(() => import('../components/ContactSection'));
+const ResumeVisionSection = React.lazy(() => import('../components/ResumeVisionSection').then(module => ({ default: module.ResumeVisionSection })));
 
 export default function Home() {
   return (
     <div className="w-full flex flex-col">
       {/* Hero Section */}
-      {/* 1. Hero Section - Data Analyst Focus */}
       <section id="home" className="min-h-screen relative flex items-center justify-center overflow-hidden pt-20 pb-10">
         <div className="absolute inset-0 bg-brand-900 -z-20" />
         <ParticleNetwork />
@@ -73,48 +75,50 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Analytics Playground - TOP 1% FEATURE */}
-      <section className="py-12 relative overflow-hidden border-t border-white/5 bg-brand-900">
-        <AnalyticsPlayground />
-      </section>
+      <Suspense fallback={<div className="h-screen flex items-center justify-center text-accent-cyan animate-pulse">Loading Sections...</div>}>
+        {/* Analytics Playground - TOP 1% FEATURE */}
+        <section className="py-12 relative overflow-hidden border-t border-white/5 bg-brand-900">
+          <AnalyticsPlayground />
+        </section>
 
-      {/* About Section */}
-      <section id="about" className="py-24 relative overflow-hidden border-t border-white/5 bg-brand-800/30">
-        <AboutSection />
-      </section>
+        {/* About Section */}
+        <section id="about" className="py-24 relative overflow-hidden border-t border-white/5 bg-brand-800/30">
+          <AboutSection />
+        </section>
 
-      {/* Skills Section */}
-      <section id="skills" className="py-24 relative overflow-hidden border-t border-white/5 bg-brand-900">
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-accent-cyan/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
-        <SkillsSection />
-      </section>
+        {/* Skills Section */}
+        <section id="skills" className="py-24 relative overflow-hidden border-t border-white/5 bg-brand-900">
+          <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-accent-cyan/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
+          <SkillsSection />
+        </section>
 
-      {/* Experience Section */}
-      <section id="experience" className="py-24 relative overflow-hidden border-t border-white/5 bg-brand-800/30">
-        <div className="absolute top-1/2 left-0 w-[600px] h-[600px] bg-accent-purple/5 rounded-full blur-[100px] -z-10 pointer-events-none -translate-y-1/2" />
-        <ExperienceSection />
-      </section>
+        {/* Experience Section */}
+        <section id="experience" className="py-24 relative overflow-hidden border-t border-white/5 bg-brand-800/30">
+          <div className="absolute top-1/2 left-0 w-[600px] h-[600px] bg-accent-purple/5 rounded-full blur-[100px] -z-10 pointer-events-none -translate-y-1/2" />
+          <ExperienceSection />
+        </section>
 
-      {/* Projects Section */}
-      <section id="projects" className="py-24 relative overflow-hidden border-t border-white/5 bg-brand-900">
-        <ProjectsSection />
-      </section>
+        {/* Projects Section */}
+        <section id="projects" className="py-24 relative overflow-hidden border-t border-white/5 bg-brand-900">
+          <ProjectsSection />
+        </section>
 
-      {/* Analytics Section */}
-      <section id="analytics" className="py-24 relative overflow-hidden border-t border-white/5 bg-brand-800/30">
-        <AnalyticsSection />
-      </section>
+        {/* Analytics Section */}
+        <section id="analytics" className="py-24 relative overflow-hidden border-t border-white/5 bg-brand-800/30">
+          <AnalyticsSection />
+        </section>
 
-      {/* Resume & Vision Section */}
-      <section id="resume-vision" className="py-24 relative overflow-hidden border-t border-white/5 bg-brand-900">
-         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-amber-400/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
-         <ResumeVisionSection />
-      </section>
+        {/* Resume & Vision Section */}
+        <section id="resume-vision" className="py-24 relative overflow-hidden border-t border-white/5 bg-brand-900">
+           <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-amber-400/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
+           <ResumeVisionSection />
+        </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-24 relative overflow-hidden border-t border-white/5 bg-brand-800/30">
-        <ContactSection />
-      </section>
+        {/* Contact Section */}
+        <section id="contact" className="py-24 relative overflow-hidden border-t border-white/5 bg-brand-800/30">
+          <ContactSection />
+        </section>
+      </Suspense>
     </div>
   );
 }

@@ -14,6 +14,7 @@ export default function VoiceNavigation() {
   const isListeningRef = useRef(isListening);
   const isAwakeRef = useRef(isAwake);
   const recognitionRef = useRef<any>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     isListeningRef.current = isListening;
@@ -21,6 +22,7 @@ export default function VoiceNavigation() {
   }, [isListening, isAwake]);
 
   useEffect(() => {
+    let isMounted = true;
     // @ts-ignore
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
@@ -35,6 +37,7 @@ export default function VoiceNavigation() {
     recognitionRef.current = recognition;
 
     const speak = (text: string) => {
+      if (!isMounted) return;
       setFeedback(text);
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
@@ -270,9 +273,18 @@ export default function VoiceNavigation() {
              
              // 2. Fetch General Knowledge (Wikipedia)
              speak(`Let me look that up for you.`);
-             fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(fallbackQuery)}`)
+             
+             if (abortControllerRef.current) {
+               abortControllerRef.current.abort();
+             }
+             abortControllerRef.current = new AbortController();
+             
+             fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(fallbackQuery)}`, {
+               signal: abortControllerRef.current.signal
+             })
                .then(res => res.json())
                .then(data => {
+                 if (!isMounted) return;
                  if (data && data.extract) {
                    speak(data.extract.substring(0, 200) + '...');
                  } else {
@@ -280,7 +292,8 @@ export default function VoiceNavigation() {
                    window.open(`https://www.google.com/search?q=${encodeURIComponent(fallbackQuery)}`, '_blank');
                  }
                })
-               .catch(() => {
+               .catch((err) => {
+                 if (!isMounted || err.name === 'AbortError') return;
                  speak(`I had trouble fetching the answer. Searching the web instead.`);
                  window.open(`https://www.google.com/search?q=${encodeURIComponent(fallbackQuery)}`, '_blank');
                });
@@ -288,16 +301,6 @@ export default function VoiceNavigation() {
              speak(`I am not sure what you mean, sir.`);
           }
           break;
-      }
-
-      setTimeout(() => setFeedback(''), 4000);
-    };
-
-    recognition.onerror = (event: any) => {
-      console.error('Speech recognition error:', event.error);
-      if (event.error === 'not-allowed' || event.error === 'audio-capture') {
-         setIsListening(false);
-         setIsAwake(false);
       }
     };
 
