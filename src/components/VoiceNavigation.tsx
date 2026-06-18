@@ -46,14 +46,17 @@ export default function VoiceNavigation() {
       console.log("Spidy heard:", speechToText);
 
       // --- WAKE WORD LOGIC ---
-      if (speechToText.includes('hey spidy') || speechToText.includes('hi spidy') || speechToText.includes('wake up spidy')) {
+      const wakeRegex = /(hey|hi|hello|wake up|listen)\s*(spid.*|speed.*|spider)/i;
+      const sleepRegex = /(keep quiet|go to sleep|quiet|shut up|stop listening)\s*(spid.*|speed.*|spider)?/i;
+
+      if (wakeRegex.test(speechToText)) {
         setIsAwake(true);
         speak('Yes sir, I am listening.');
         setTimeout(() => setFeedback(''), 4000);
         return;
       }
 
-      if (speechToText.includes('keep quiet spidy') || speechToText.includes('go to sleep spidy') || speechToText.includes('quiet spidy')) {
+      if (sleepRegex.test(speechToText)) {
         setIsAwake(false);
         speak('Going silent, sir.');
         setTimeout(() => setFeedback(''), 4000);
