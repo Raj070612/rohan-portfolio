@@ -100,6 +100,13 @@ export default function VoiceNavigation() {
         { intent: 'MUSIC_PLAY_GHADINA', regex: /(play|start|put on).*(ghadina|gar gar|phire)/i },
         { intent: 'MUSIC_PLAY_SHYAMAL', regex: /(play|start|put on).*(shyamal|sanware|new song)/i },
         { intent: 'MUSIC_PLAY_GENERIC', regex: /(play|start|put on|turn on).*(music|song|track|audio|something)/i },
+
+        // --- GENERAL BROWSER ASSISTANT ---
+        { intent: 'TIME', regex: /(what time is it|tell me the time|current time)/i },
+        { intent: 'DATE', regex: /(what is the date|today's date|what day is it)/i },
+        { intent: 'OPEN_WEBSITE', regex: /(open|go to|navigate to)\s+([a-z0-9-]+\.(com|org|net|in|co|io|edu))/i },
+        { intent: 'WEB_SEARCH_YOUTUBE', regex: /(search youtube for|youtube|play on youtube)\s+(.*)/i },
+        { intent: 'WEB_SEARCH_GOOGLE', regex: /(search google for|search for|look up|google)\s+(.*)/i },
       ];
 
       let matchedIntent = 'UNKNOWN';
@@ -118,13 +125,13 @@ export default function VoiceNavigation() {
           speak('Hello! How can I help you today?');
           break;
         case 'IDENTITY':
-          speak('I am Spidy, an advanced AI assistant created to help you navigate Rohan\'s digital portfolio.');
+          speak('I am Spidy, an advanced AI assistant created by Rohan.');
           break;
         case 'CREATOR':
           speak('I was engineered by Rohan Baviskar. He is a brilliant developer.');
           break;
         case 'COMPLIMENT':
-          speak('Thank you! Rohan programmed me to be as helpful as possible.');
+          speak('Thank you! I try my best to be helpful.');
           break;
         case 'STATUS':
           speak('I am operating at optimal efficiency. All systems go!');
@@ -193,9 +200,53 @@ export default function VoiceNavigation() {
           window.dispatchEvent(new CustomEvent('spidy-music', { detail: { action: 'play' } }));
           speak('Starting the background music.');
           break;
+          
+        // --- GENERAL BROWSER ASSISTANT COMMANDS ---
+        case 'TIME':
+          const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          speak(`The current time is ${time}.`);
+          break;
+        case 'DATE':
+          const date = new Date().toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+          speak(`Today is ${date}.`);
+          break;
+        case 'OPEN_WEBSITE': {
+          const matchSite = speechToText.match(/(open|go to|navigate to)\s+([a-z0-9-]+\.(com|org|net|in|co|io|edu))/i);
+          if (matchSite && matchSite[2]) {
+            const url = `https://${matchSite[2]}`;
+            window.open(url, '_blank');
+            speak(`Opening ${matchSite[2]}`);
+          }
+          break;
+        }
+        case 'WEB_SEARCH_YOUTUBE': {
+          const ytMatch = speechToText.match(/(search youtube for|youtube|play on youtube)\s+(.*)/i);
+          if (ytMatch && ytMatch[2]) {
+            const query = ytMatch[2].replace(/spid.*/i, '').trim(); // Remove wake word trailing
+            window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`, '_blank');
+            speak(`Searching YouTube for ${query}`);
+          }
+          break;
+        }
+        case 'WEB_SEARCH_GOOGLE': {
+          const gMatch = speechToText.match(/(search google for|search for|look up|google)\s+(.*)/i);
+          if (gMatch && gMatch[2]) {
+            const query = gMatch[2].replace(/spid.*/i, '').trim(); // Remove wake word trailing
+            window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
+            speak(`Searching the web for ${query}`);
+          }
+          break;
+        }
         case 'UNKNOWN':
         default:
-          speak(`I heard: "${speechToText}", but I am currently restricted to navigating Rohan's portfolio. How can I assist with that?`);
+          // Ultimate fallback: Just search google!
+          const fallbackQuery = speechToText.replace(/(hey|hi|hello|wake up|listen|spid.*|speed.*|spider)/ig, '').trim();
+          if (fallbackQuery.length > 3) {
+             window.open(`https://www.google.com/search?q=${encodeURIComponent(fallbackQuery)}`, '_blank');
+             speak(`I don't know the answer, so I am searching the web for: ${fallbackQuery}`);
+          } else {
+             speak(`I am not sure what you mean, sir.`);
+          }
           break;
       }
 
