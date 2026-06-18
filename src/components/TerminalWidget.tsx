@@ -35,6 +35,15 @@ export default function TerminalWidget() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen]);
 
+  // Spidy Voice Control integration
+  useEffect(() => {
+    const handleSpidyTerminal = () => {
+      setIsOpen(true);
+    };
+    window.addEventListener('spidy-terminal', handleSpidyTerminal);
+    return () => window.removeEventListener('spidy-terminal', handleSpidyTerminal);
+  }, []);
+
   // Auto-scroll to bottom when history changes
   useEffect(() => {
     if (bottomRef.current) {

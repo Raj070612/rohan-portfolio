@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Loader from './Loader';
 import Navbar from './Navbar';
 import Footer from './Footer';
@@ -14,6 +14,14 @@ import { motion } from 'framer-motion';
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [isHandTrackingEnabled, setIsHandTrackingEnabled] = useState(false);
+  
+  useEffect(() => {
+    const handleSpidyHandTracking = () => {
+      setIsHandTrackingEnabled(prev => !prev);
+    };
+    window.addEventListener('spidy-hand-tracking', handleSpidyHandTracking);
+    return () => window.removeEventListener('spidy-hand-tracking', handleSpidyHandTracking);
+  }, []);
 
   return (
     <>

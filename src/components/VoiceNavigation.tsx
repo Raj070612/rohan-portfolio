@@ -101,6 +101,11 @@ export default function VoiceNavigation() {
         { intent: 'MUSIC_PLAY_SHYAMAL', regex: /(play|start|put on).*(shyamal|sanware|new song)/i },
         { intent: 'MUSIC_PLAY_GENERIC', regex: /(play|start|put on|turn on).*(music|song|track|audio|something)/i },
 
+        // --- WIDGET CONTROL ---
+        { intent: 'TOGGLE_HAND_TRACKING', regex: /(turn on|turn off|enable|disable|start|stop|toggle).*(hand tracking|hand navigation|gestures)/i },
+        { intent: 'OPEN_TERMINAL', regex: /(open|start|show|run).*(terminal|command line|console)/i },
+        { intent: 'OPEN_CHATBOT', regex: /(open|start|show|talk to).*(chat|bot|chatbot|assistant text)/i },
+
         // --- GENERAL BROWSER ASSISTANT ---
         { intent: 'TIME', regex: /(what time is it|tell me the time|current time)/i },
         { intent: 'DATE', regex: /(what is the date|today's date|what day is it)/i },
@@ -199,6 +204,20 @@ export default function VoiceNavigation() {
         case 'MUSIC_PLAY_GENERIC':
           window.dispatchEvent(new CustomEvent('spidy-music', { detail: { action: 'play' } }));
           speak('Starting the background music.');
+          break;
+          
+        // --- WIDGET CONTROL COMMANDS ---
+        case 'TOGGLE_HAND_TRACKING':
+          window.dispatchEvent(new CustomEvent('spidy-hand-tracking'));
+          speak('Toggling the AI Hand Navigation system.');
+          break;
+        case 'OPEN_TERMINAL':
+          window.dispatchEvent(new CustomEvent('spidy-terminal'));
+          speak('Opening the developer terminal.');
+          break;
+        case 'OPEN_CHATBOT':
+          window.dispatchEvent(new CustomEvent('spidy-chatbot'));
+          speak('Opening the textual chat interface.');
           break;
           
         // --- GENERAL BROWSER ASSISTANT COMMANDS ---

@@ -26,6 +26,14 @@ export default function ChatbotWidget() {
     scrollToBottom();
   }, [messages, isTyping]);
 
+  useEffect(() => {
+    const handleSpidyChatbot = () => {
+      setIsOpen(true);
+    };
+    window.addEventListener('spidy-chatbot', handleSpidyChatbot);
+    return () => window.removeEventListener('spidy-chatbot', handleSpidyChatbot);
+  }, []);
+
   const generateResponse = (query: string): string => {
     const lowerQuery = query.toLowerCase();
     
