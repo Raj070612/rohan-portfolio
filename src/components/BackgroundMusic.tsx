@@ -4,7 +4,8 @@ import { FaPlay, FaPause, FaMusic, FaStepForward, FaList } from 'react-icons/fa'
 
 const PLAYLIST = [
   { id: 1, title: "Krishna's Flute", file: "/flute.mp3" },
-  { id: 2, title: "Ghadina Gata Gar Gar Phire", file: "/ghadina-gata.webm" }
+  { id: 2, title: "Ghadina Gata Gar Gar Phire", file: "/ghadina-gata.webm" },
+  { id: 3, title: "Shyamal Sanware", file: "/shyamal-sanware.webm" }
 ];
 
 export default function BackgroundMusic() {

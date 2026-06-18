@@ -43,9 +43,9 @@ export function ResumeVisionSection() {
             <h4 className="text-xl font-bold text-white mb-2">Rohan Avinash Baviskar</h4>
             <p className="text-sm text-slate-400 mb-6">Complete overview of experience, education, skills, and projects.</p>
             <a 
-              href="/resume.pdf" 
-              target="_blank"
-              className="px-6 py-3 rounded-full bg-emerald-400 text-brand-900 font-bold flex items-center gap-2 hover:bg-white transition-colors"
+              href="/Rohan_Baviskar_Resume.pdf" 
+              target="_blank" 
+              className="inline-flex items-center gap-3 px-8 py-4 rounded-full glass hover:bg-white/10 text-white font-medium transition-all hover:scale-105 active:scale-95"
             >
               Download Full Resume <FaDownload />
             </a>

@@ -3,56 +3,42 @@ import { FaCode, FaDatabase, FaServer, FaTools, FaBrain } from 'react-icons/fa';
 
 const skillCategories = [
   {
-    title: 'Data & Analytics',
-    icon: FaDatabase,
-    color: 'text-accent-cyan',
-    borderColor: 'border-accent-cyan',
-    bgColor: 'bg-accent-cyan/10',
-    skills: [
-      { name: 'SQL', level: 95 },
-      { name: 'Power BI', level: 90 },
-      { name: 'Tableau', level: 85 },
-      { name: 'Excel (Advanced)', level: 95 },
-      { name: 'Data Modeling', level: 80 },
-    ]
-  },
-  {
-    title: 'Programming & Logic',
+    title: 'Coding Languages',
     icon: FaCode,
     color: 'text-accent-blue',
     borderColor: 'border-accent-blue',
     bgColor: 'bg-accent-blue/10',
     skills: [
-      { name: 'Python', level: 90 },
-      { name: 'Pandas & NumPy', level: 85 },
-      { name: 'Java', level: 85 },
-      { name: 'C++', level: 80 },
+      { name: 'Java', level: 90 },
+      { name: 'C++', level: 85 },
+      { name: 'Python', level: 85 },
+      { name: 'SQL', level: 95 },
+      { name: 'C', level: 80 },
+      { name: 'HTML', level: 95 }
     ]
   },
   {
-    title: 'Web Technologies',
-    icon: FaServer,
-    color: 'text-accent-purple',
-    borderColor: 'border-accent-purple',
-    bgColor: 'bg-accent-purple/10',
+    title: 'Database Systems',
+    icon: FaDatabase,
+    color: 'text-accent-cyan',
+    borderColor: 'border-accent-cyan',
+    bgColor: 'bg-accent-cyan/10',
     skills: [
-      { name: 'React.js', level: 90 },
-      { name: 'HTML/CSS', level: 95 },
-      { name: 'REST APIs', level: 85 },
-      { name: 'Tailwind CSS', level: 90 },
+      { name: 'MySQL', level: 90 },
     ]
   },
   {
-    title: 'Developer Tools',
+    title: 'Tools',
     icon: FaTools,
     color: 'text-emerald-400',
     borderColor: 'border-emerald-400',
     bgColor: 'bg-emerald-400/10',
     skills: [
-      { name: 'Git/GitHub', level: 90 },
-      { name: 'Jupyter Notebook', level: 85 },
-      { name: 'VS Code', level: 95 },
-      { name: 'Linux', level: 80 },
+      { name: 'Power BI', level: 90 },
+      { name: 'Microsoft Excel', level: 95 },
+      { name: 'IntelliJ IDEA', level: 85 },
+      { name: 'Visual Studio Code', level: 95 },
+      { name: 'Linux', level: 80 }
     ]
   },
   {
@@ -62,10 +48,11 @@ const skillCategories = [
     borderColor: 'border-amber-400',
     bgColor: 'bg-amber-400/10',
     skills: [
-      { name: 'Data Structures', level: 85 },
-      { name: 'Algorithms', level: 80 },
-      { name: 'Statistical Analysis', level: 75 },
-      { name: 'Business Intelligence', level: 85 },
+      { name: 'Algorithm Optimization', level: 85 },
+      { name: 'OS Concepts', level: 80 },
+      { name: 'SDLC', level: 85 },
+      { name: 'Neural Networks', level: 70 },
+      { name: 'Network Protocols', level: 75 }
     ]
   }
 ];

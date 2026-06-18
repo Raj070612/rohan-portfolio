@@ -16,15 +16,14 @@ const experiences = [
       shadow: 'shadow-[0_0_20px_rgba(6,182,212,0.5)]',
     },
     responsibilities: [
-      'Cleaned and analyzed 5000+ records to extract meaningful business insights.',
-      'Built 4+ interactive Power BI dashboards for performance tracking.',
-      'Improved reporting efficiency by 25% through automated data pipelines.',
-      'Utilized Python, SQL, Excel, and Power BI for comprehensive data solutions.'
+      'Contributed to the "Stakeholder Insights and Performance Dashboard" by cleaning and analyzing 5,000+ records using Python, SQL, and Excel.',
+      'Built 4+ interactive Power BI dashboards to track 10+ KPIs and visualize performance trends.',
+      'Helped improve reporting efficiency by ~25% through automated data processing and validation.'
     ],
   },
   {
     role: 'C++ Programming Intern',
-    company: 'TechnoHacks Solutions',
+    company: 'TechnoHacks Solutions Pvt. Ltd.',
     duration: 'June 2024 – July 2024',
     icon: FaCode,
     colorClasses: {
@@ -36,10 +35,9 @@ const experiences = [
       shadow: 'shadow-[0_0_20px_rgba(59,130,246,0.5)]',
     },
     responsibilities: [
-      'Solved complex Data Structures and Algorithms (DSA) problems.',
-      'Optimized algorithms to reduce time and space complexities.',
-      'Implemented Standard Template Library (STL) concepts efficiently.',
-      'Applied Object-Oriented Programming (OOP) principles and collaborated using Git.'
+      'Solved 15+ LeetCode/DSA problems in C++ focusing on arrays, strings, recursion, and STL.',
+      'Optimized solutions for better time and space complexity.',
+      'Applied object-oriented principles and used Git for version control.'
     ],
   }
 ];

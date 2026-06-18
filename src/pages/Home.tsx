@@ -60,7 +60,7 @@ export default function Home() {
                 Explore Projects
                 <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
               </a>
-              <a href="/resume.pdf" target="_blank" className="px-6 py-3 rounded-full glass hover:bg-white/10 text-white font-medium flex items-center gap-2 transition-all">
+              <a href="/Rohan_Baviskar_Resume.pdf" target="_blank" className="px-6 py-3 rounded-full glass hover:bg-white/10 text-white font-medium flex items-center gap-2 transition-all">
                 Download Resume
                 <FaDownload />
               </a>

@@ -3,14 +3,14 @@ import { FaGraduationCap, FaBrain, FaChartBar, FaLaptopCode, FaRocket } from 're
 
 const education = [
   {
-    degree: 'B.E Computer Engineering',
-    year: '2022–2026',
-    status: 'Present',
+    degree: "B.E in Computer Engineering",
+    year: "Nov 2022 – June 2026",
+    status: "SSBT's COET",
   },
   {
-    degree: 'HSC Science',
-    year: '2021–2022',
-    status: 'Completed',
+    degree: "Higher Secondary School",
+    year: "April 2021 – Feb 2022",
+    status: "H.D Save Jr. College (67.50%)",
   }
 ];
 

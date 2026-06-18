@@ -15,19 +15,19 @@ export default function ProjectsSection() {
   };
 
   const virtualHerbalGardenData = {
-    title: "Virtual Herbal Garden Hub",
+    title: "Virtual Herbal Garden Website",
     description: "Immersive educational web platform",
     longDescription: [
-      "Developed a comprehensive platform to spread awareness about herbal plants, their medicinal uses, and proper cultivation techniques.",
-      "The platform features an interactive UI that allows users to explore various herbs, accompanied by an AI-integrated chatbot to answer specific plant-related queries instantly."
+      "Developed a responsive web application designed to enhance user's knowledge of herbal plants through interactive experiences.",
+      "Impact: Encouraged awareness of herbal benefits, provided educational insights, and promoted accessible plant-based solutions through interactive features."
     ],
     features: [
-      "Interactive 3D Plant Visualization",
-      "AI-Powered Herbal Chatbot for instant queries",
-      "Firebase backend for user authentication and data storage",
-      "Responsive, mobile-first design system"
+      "Chat Bot",
+      "Quizzes",
+      "3D garden (3D plants view)",
+      "Experts Consultancy"
     ],
-    tech: ['React.js', 'Three.js', 'Firebase', 'Tailwind CSS', 'JavaScript', 'REST APIs'],
+    tech: ['HTML', 'CSS', 'JavaScript', 'React.js', 'Three.js', 'Firebase', 'API integrations'],
     image: "/virtual-herbal-garden.png",
     liveUrl: "https://virtual-herbal-garden-hub.netlify.app/",
     githubUrl: "#"
