@@ -22,6 +22,7 @@ export default function VoiceNavigation() {
     recognition.onresult = (event: any) => {
       const current = event.resultIndex;
       const speechToText = event.results[current][0].transcript.toLowerCase().trim();
+      console.log("Spidy heard:", speechToText);
 
       // Execute Commands
       if (speechToText.includes('scroll down') || speechToText.includes('go down')) {
@@ -76,6 +77,12 @@ export default function VoiceNavigation() {
 
     recognition.onerror = (event: any) => {
       console.error('Speech recognition error', event.error);
+      setIsListening(false);
+    };
+
+    recognition.onend = () => {
+      // The browser automatically stops listening after a period of silence.
+      // We must reset the UI state so the user can click it again.
       setIsListening(false);
     };
 
