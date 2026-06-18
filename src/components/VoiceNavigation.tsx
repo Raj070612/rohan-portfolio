@@ -70,74 +70,133 @@ export default function VoiceNavigation() {
       // If not awake, ignore all other commands
       if (!isAwakeRef.current) return;
 
-      // --- NATURAL LANGUAGE UNDERSTANDING ---
-      
-      // Scrolling
-      if (speechToText.includes('down') || speechToText.includes('lower')) {
-        window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
-        speak('Scrolling down.');
-      } else if (speechToText.includes('up') || speechToText.includes('higher')) {
-        window.scrollBy({ top: -window.innerHeight * 0.8, behavior: 'smooth' });
-        speak('Scrolling up.');
-      } else if (speechToText.includes('top') || speechToText.includes('beginning')) {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        speak('Taking you to the top.');
-      } else if (speechToText.includes('bottom') || speechToText.includes('end')) {
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-        speak('Going to the bottom.');
+      // --- NLP INTENT ENGINE ---
+      const intents = [
+        // Greetings & Conversation
+        { intent: 'GREETING', regex: /(hello|hi|hey|good morning|good afternoon|greetings)\b/i },
+        { intent: 'IDENTITY', regex: /(who are you|what are you|your name|introduce yourself)\b/i },
+        { intent: 'CREATOR', regex: /(who made you|who created you|who programmed you|who is your boss)\b/i },
+        { intent: 'COMPLIMENT', regex: /(good job|well done|awesome|cool|amazing|great|nice work)\b/i },
+        { intent: 'STATUS', regex: /(how are you|how do you do|what\'s up)\b/i },
+
+        // Global Actions
+        { intent: 'DOWNLOAD_RESUME', regex: /(download|get|show|view|open|see).*(resume|cv|curriculum vitae)/i },
+        { intent: 'SCROLL_DOWN', regex: /(scroll|go|move|page).*(down|lower|bottom)/i },
+        { intent: 'SCROLL_UP', regex: /(scroll|go|move|page).*(up|higher|top)/i },
+        { intent: 'GO_TOP', regex: /(take me|go|move|scroll).*(top|beginning|start)/i },
+        { intent: 'GO_BOTTOM', regex: /(take me|go|move|scroll).*(bottom|end)/i },
+
+        // Navigation
+        { intent: 'NAVIGATE_ABOUT', regex: /(take me to|go to|show me|navigate to|open|tell me).*(about|who is rohan|yourself|profile)/i },
+        { intent: 'NAVIGATE_PROJECTS', regex: /(take me to|go to|show me|navigate to|open|see|view).*(project|work|portfolio|built|made|created)/i },
+        { intent: 'NAVIGATE_SKILLS', regex: /(take me to|go to|show me|navigate to|open|see|view).*(skill|technolog|stack|languages|tools)/i },
+        { intent: 'NAVIGATE_EXPERIENCE', regex: /(take me to|go to|show me|navigate to|open|see|view).*(experience|job|history|career|worked)/i },
+        { intent: 'NAVIGATE_CONTACT', regex: /(take me to|go to|show me|navigate to|open|get in touch).*(contact|hire|email|message|reach out)/i },
+
+        // Music Control
+        { intent: 'MUSIC_PAUSE', regex: /(stop|pause|halt|quiet|shut up|mute).*(music|song|track|audio|sound)?/i },
+        { intent: 'MUSIC_NEXT', regex: /(next|skip|change|different).*(music|song|track|audio)?/i },
+        { intent: 'MUSIC_PLAY_FLUTE', regex: /(play|start|put on).*(flute|krishna)/i },
+        { intent: 'MUSIC_PLAY_GHADINA', regex: /(play|start|put on).*(ghadina|gar gar|phire)/i },
+        { intent: 'MUSIC_PLAY_SHYAMAL', regex: /(play|start|put on).*(shyamal|sanware|new song)/i },
+        { intent: 'MUSIC_PLAY_GENERIC', regex: /(play|start|put on|turn on).*(music|song|track|audio|something)/i },
+      ];
+
+      let matchedIntent = 'UNKNOWN';
+      for (const { intent, regex } of intents) {
+        if (regex.test(speechToText)) {
+          matchedIntent = intent;
+          break;
+        }
       }
-      
-      // Section Navigation
-      else if (speechToText.includes('about') || speechToText.includes('who is rohan') || speechToText.includes('yourself')) {
-        document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
-        speak('Here is some information about Rohan.');
-      } else if (speechToText.includes('project') || speechToText.includes('work') || speechToText.includes('portfolio')) {
-        document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
-        speak('Showcasing your projects now.');
-      } else if (speechToText.includes('skill') || speechToText.includes('technolog') || speechToText.includes('stack')) {
-        document.getElementById('skills')?.scrollIntoView({ behavior: 'smooth' });
-        speak('Navigating to the Engineering Command Center.');
-      } else if (speechToText.includes('experience') || speechToText.includes('job') || speechToText.includes('work history')) {
-        document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' });
-        speak('Here is Rohan\'s professional experience.');
-      } else if (speechToText.includes('contact') || speechToText.includes('hire') || speechToText.includes('email')) {
-        document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-        speak('Going to the contact section. Let\'s get in touch!');
-      } 
-      
-      // Global Actions
-      else if (speechToText.includes('resume') || speechToText.includes('cv') || speechToText.includes('download')) {
-        window.open('/Rohan_Baviskar_Resume.pdf', '_blank');
-        speak('Downloading your resume now, sir.');
-      } 
-      
-      // Smart Music Control
-      else if (speechToText.includes('music') || speechToText.includes('song') || speechToText.includes('track') || speechToText.includes('play')) {
-        if (speechToText.includes('stop') || speechToText.includes('pause') || speechToText.includes('quiet') || speechToText.includes('shut up')) {
+
+      console.log(`Resolved Intent: ${matchedIntent}`);
+
+      // --- EXECUTE INTENT ---
+      switch (matchedIntent) {
+        case 'GREETING':
+          speak('Hello! How can I help you today?');
+          break;
+        case 'IDENTITY':
+          speak('I am Spidy, an advanced AI assistant created to help you navigate Rohan\'s digital portfolio.');
+          break;
+        case 'CREATOR':
+          speak('I was engineered by Rohan Baviskar. He is a brilliant developer.');
+          break;
+        case 'COMPLIMENT':
+          speak('Thank you! Rohan programmed me to be as helpful as possible.');
+          break;
+        case 'STATUS':
+          speak('I am operating at optimal efficiency. All systems go!');
+          break;
+        case 'DOWNLOAD_RESUME':
+          window.open('/Rohan_Baviskar_Resume.pdf', '_blank');
+          speak('Downloading Rohan\'s resume for you right now.');
+          break;
+        case 'SCROLL_DOWN':
+          window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
+          speak('Scrolling down.');
+          break;
+        case 'SCROLL_UP':
+          window.scrollBy({ top: -window.innerHeight * 0.8, behavior: 'smooth' });
+          speak('Scrolling up.');
+          break;
+        case 'GO_TOP':
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          speak('Taking you to the top of the page.');
+          break;
+        case 'GO_BOTTOM':
+          window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+          speak('Going to the bottom.');
+          break;
+        case 'NAVIGATE_ABOUT':
+          document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+          speak('Here is everything you need to know about Rohan.');
+          break;
+        case 'NAVIGATE_PROJECTS':
+          document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
+          speak('Showcasing Rohan\'s latest projects and creations.');
+          break;
+        case 'NAVIGATE_SKILLS':
+          document.getElementById('skills')?.scrollIntoView({ behavior: 'smooth' });
+          speak('Entering the engineering and technology stack.');
+          break;
+        case 'NAVIGATE_EXPERIENCE':
+          document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' });
+          speak('Here is his professional work history.');
+          break;
+        case 'NAVIGATE_CONTACT':
+          document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+          speak('Going to the contact terminal. Send him a message!');
+          break;
+        case 'MUSIC_PAUSE':
           window.dispatchEvent(new CustomEvent('spidy-music', { detail: { action: 'pause' } }));
-          speak('Pausing the music.');
-        } else if (speechToText.includes('next') || speechToText.includes('skip')) {
+          speak('Pausing the audio track.');
+          break;
+        case 'MUSIC_NEXT':
           window.dispatchEvent(new CustomEvent('spidy-music', { detail: { action: 'next' } }));
           speak('Skipping to the next track.');
-        } else if (speechToText.includes('flute') || speechToText.includes('krishna')) {
+          break;
+        case 'MUSIC_PLAY_FLUTE':
           window.dispatchEvent(new CustomEvent('spidy-music', { detail: { action: 'play', track: 0 } }));
           speak('Playing Krishna\'s Flute.');
-        } else if (speechToText.includes('ghadina') || speechToText.includes('gar gar') || speechToText.includes('phire')) {
+          break;
+        case 'MUSIC_PLAY_GHADINA':
           window.dispatchEvent(new CustomEvent('spidy-music', { detail: { action: 'play', track: 1 } }));
           speak('Playing Ghadina Gata Gar Gar Phire.');
-        } else if (speechToText.includes('shyamal') || speechToText.includes('sanware') || speechToText.includes('new song')) {
+          break;
+        case 'MUSIC_PLAY_SHYAMAL':
           window.dispatchEvent(new CustomEvent('spidy-music', { detail: { action: 'play', track: 2 } }));
           speak('Playing Shyamal Sanware.');
-        } else {
-          // Generic play command
+          break;
+        case 'MUSIC_PLAY_GENERIC':
           window.dispatchEvent(new CustomEvent('spidy-music', { detail: { action: 'play' } }));
-          speak('Playing background music.');
-        }
-      } 
-      
-      // Fallback
-      else {
-         speak(`I heard you say: ${speechToText}, but I don't have a protocol for that yet.`);
+          speak('Starting the background music.');
+          break;
+        case 'UNKNOWN':
+        default:
+          speak(`I heard: "${speechToText}", but I am currently restricted to navigating Rohan's portfolio. How can I assist with that?`);
+          break;
       }
 
       setTimeout(() => setFeedback(''), 4000);
